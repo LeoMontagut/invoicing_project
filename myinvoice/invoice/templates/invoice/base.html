@@ -1,0 +1,40 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}Presupuestos{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    </head>
+    <body>
+        <div id="header">
+            <a href="/" class="logo">Presupuestos</a>
+            <a href="{% url 'login' %}" class="logout">Log in</a>
+            <a href="{% url 'logout' %}" class="logout">Log out</a>
+        </div>
+        <div id="subheader">
+            <div class="cart">
+                {% with total_items=cart|length %}
+                    {% if total_items > 0 %}
+                        Your products:
+                        <a href="{% url 'cart:cart_detail' %}">
+                            {{ total_items }} item{{ total_items|pluralize }},
+                            ${{ cart.get_total_price }}
+                        </a>
+                    {% elif not order %}
+                        Product list is empty.
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="admin">
+                <a href="/admin/orders/order/">Orders </a>
+            </div>
+        </div>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
